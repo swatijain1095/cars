@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
 import CarList from "./CarList";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { carSelector } from '../store/carSlice';
 
-function CarDashboard({ cars, setCars }) {
+function CarDashboard() {
     const [searchCar, setSearchCar] = useState('');
+    const cars = useSelector(carSelector);
     const [filteredCars, setFilteredCars] = useState(cars);
+
+    useEffect(() => {
+        setFilteredCars(cars);
+    }, [cars]);
 
     const handleSearch = (event) => {
         setSearchCar(event.target.value);
@@ -31,18 +37,10 @@ function CarDashboard({ cars, setCars }) {
                     </div>
                 </div>
             </header>
-            <CarList cars={filteredCars} setCars={setCars}/>
+            <CarList cars={filteredCars} />
             <footer>Total Value: ${totalCarValue()}</footer>
         </section>
     )
-}
-CarDashboard.propTypes = {
-    cars: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        value: PropTypes.number.isRequired
-    })).isRequired,
-    setCars: PropTypes.func.isRequired
 }
 
 

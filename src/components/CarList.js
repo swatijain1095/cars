@@ -1,16 +1,11 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { remove } from '../store/carSlice';
 
-function CarList({ cars, setCars }) {
-
+function CarList({ cars }) {
+    const dispatch = useDispatch();
     const handleDelete = (id) => {
-        setCars(cars.filter((car) => {
-            return id !== car.id;
-        }
-        ))
-        // const carsCopy = cars.filter((car) => {
-        //     return id !== car.id;
-        // });
-        // setCars(carsCopy);
+        dispatch(remove(id))
     }
 
     const renderedList = cars.map(({ id, name, value }) => {
@@ -37,8 +32,7 @@ CarList.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         value: PropTypes.number.isRequired
-    })).isRequired,
-    setCars: PropTypes.func.isRequired
+    })).isRequired
 }
 
 

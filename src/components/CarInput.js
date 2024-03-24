@@ -1,27 +1,28 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { add } from '../store/carSlice';
 
-function CarInput({ cars, setCars }) {
+function CarInput() {
     const [carName, setCarName] = useState('');
     const [carValue, setCarValue] = useState('');
     const [isCarNameEmpty, setIsCarNameEmpty] = useState(false);
     const [isCarValueEmpty, setIsCarValueEmpty] = useState(false);
+    const dispatch = useDispatch();
 
     const getRandomInt = () => {
         return Math.floor(Math.random() * 100000);
     };
 
-    const handleSubmit = (e) => {
+      const handleSubmit = (e) => {
         e.preventDefault();
         if(carName === '' || carValue === '') {
             carName === '' && setIsCarNameEmpty(true);
             carValue === '' && setIsCarValueEmpty(true);
         } else {
-            setCars([...cars, {
+            dispatch(add({
                 id: getRandomInt(),
                 name: carName,
-                value: parseInt(carValue)
-            }]);
+                value: parseInt(carValue)}))
             setIsCarNameEmpty(false);
             setIsCarValueEmpty(false);
             setCarName('');
@@ -58,13 +59,5 @@ function CarInput({ cars, setCars }) {
     )
 };
 
-CarInput.propTypes = {
-    cars: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        value: PropTypes.number.isRequired
-    })).isRequired,
-    setCars: PropTypes.func.isRequired
-}
 
 export default CarInput;
