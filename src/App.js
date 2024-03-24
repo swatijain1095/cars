@@ -9,6 +9,16 @@ import { useState } from 'react';
             id: 1,
             name: 'Kia Sonet',
             value: 15000
+        },
+        {
+            id: 2,
+            name: 'Kia Seltos',
+            value: 20000
+        },
+        {
+            id: 3,
+            name: 'Kia Carens',
+            value: 25000
         }
     ];
 function App () {
@@ -17,7 +27,8 @@ function App () {
     return (
         <div className="container">
             <CarInput cars={cars} setCars={setCars} />
-            <CarDashboard  />
+            <hr></hr>
+            <CarDashboard cars={cars} setCars={setCars} />
         </div>
     )
 }

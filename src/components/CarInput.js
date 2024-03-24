@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 function CarInput({ cars, setCars }) {
     const [carName, setCarName] = useState('');
-    const [carValue, setCarValue] = useState(0);
+    const [carValue, setCarValue] = useState('');
     const [isCarNameEmpty, setIsCarNameEmpty] = useState(false);
     const [isCarValueEmpty, setIsCarValueEmpty] = useState(false);
 
@@ -12,21 +12,21 @@ function CarInput({ cars, setCars }) {
     };
 
     const handleSubmit = (e) => {
-        //Generate new random id
-        //construct a new car object
-        //
         e.preventDefault();
-        if(carName === '' || isNaN(carValue)) {
+        if(carName === '' || carValue === '') {
             carName === '' && setIsCarNameEmpty(true);
-            isNaN(carValue) && setIsCarValueEmpty(true);
+            carValue === '' && setIsCarValueEmpty(true);
         } else {
-            setIsCarNameEmpty(false)
-            setIsCarValueEmpty(false)
-        setCars([...cars, {
-            id: getRandomInt(),
-            name: carName,
-            value: carValue
-        }])}
+            setCars([...cars, {
+                id: getRandomInt(),
+                name: carName,
+                value: parseInt(carValue)
+            }]);
+            setIsCarNameEmpty(false);
+            setIsCarValueEmpty(false);
+            setCarName('');
+            setCarValue('');
+        }
     };
 
     console.log()
@@ -44,7 +44,7 @@ function CarInput({ cars, setCars }) {
                     <div className="field">
                         <label className="label">Car Value</label>
                         <div className="control">
-                            <input className={`input ${isCarValueEmpty ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={carValue} onChange={(e) => setCarValue(parseInt(e.target.value))}/>
+                            <input className={`input ${isCarValueEmpty ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={carValue} onChange={(e) => setCarValue(e.target.value)}/>
                             {isCarValueEmpty && <p className='help is-danger'>Please enter car value</p>}
                         </div>
                     </div>
