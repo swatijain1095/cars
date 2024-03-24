@@ -1,10 +1,22 @@
 import PropTypes from 'prop-types';
 import CarList from "./CarList";
+import { useState } from 'react';
 
 function CarDashboard({ cars, setCars }) {
+    const [searchCar, setSearchCar] = useState('');
+    const [filteredCars, setFilteredCars] = useState(cars);
+
+    const handleSearch = (event) => {
+        setSearchCar(event.target.value);
+
+        const _filteredCars = cars.filter((car) => {
+            return car.name.toLowerCase().includes(event.target.value.toLowerCase()) 
+        })
+        setFilteredCars(_filteredCars);
+    };
 
     const totalCarValue =() => {
-        return cars.reduce((acc, cur) => {
+        return filteredCars.reduce((acc, cur) => {
             return acc + cur.value
         }, 0);
     }
@@ -15,11 +27,11 @@ function CarDashboard({ cars, setCars }) {
                 <h2>My Cars</h2>
                 <div className='field'>
                     <div className='control'>
-                        <input className="input" placeholder='Search'/>
+                        <input className="input" placeholder='Search' value={searchCar} onChange={handleSearch}/>
                     </div>
                 </div>
             </header>
-            <CarList cars={cars} setCars={setCars}/>
+            <CarList cars={filteredCars} setCars={setCars}/>
             <footer>Total Value: ${totalCarValue()}</footer>
         </section>
     )
