@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { add } from '../store/carSlice';
+import { add, updateHighlightStr } from '../store/carSlice';
 
 function CarInput() {
     const [carName, setCarName] = useState('');
@@ -38,7 +38,9 @@ function CarInput() {
                     <div className="field">
                         <label className="label">Car Name</label>
                         <div className="control">
-                            <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => setCarName(e.target.value)}/>
+                            <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => {
+                                setCarName(e.target.value)
+                                dispatch(updateHighlightStr(e.target.value))}  }/>
                             {isCarNameEmpty && <p className='help is-danger'>Please enter car name</p>}
                         </div>
                     </div>
