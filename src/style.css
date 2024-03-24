@@ -1,0 +1,13 @@
+.car-input form{
+    display: flex;
+    align-items: end;
+    gap: 15px;
+}
+
+.car-input .submit-btn{
+    margin-bottom: var(--bulma-block-spacing);
+}
+
+.car-input .field:not(:last-child){
+    width: 100%;
+}
