@@ -3,14 +3,20 @@
     width: 600px;
 }
 
+.car-input{
+    margin-top: 15px;
+}
+
 .car-input form{
     display: flex;
-    align-items: end;
+    align-items: start;
     gap: 15px;
+    height: 106px;
 }
 
 .car-input .submit-btn{
     margin-bottom: var(--bulma-block-spacing);
+    margin-top: 32px;
 }
 
 .car-input .field:not(:last-child){

@@ -19,8 +19,7 @@ export const carSlice = createSlice({
                 name: 'Kia Carens',
                 value: 25000
             }
-        ] ,
-        highlightStr: ''
+        ]
     },
     reducers: {
         add: (state, action) => {
@@ -31,16 +30,12 @@ export const carSlice = createSlice({
                 return action.payload !== car.id
             })
             state.value = newValue;
-        },
-        updateHighlightStr: (state, action) => {
-            state.highlightStr = action.payload
         }
     }
 });
 
-export const { add, remove, updateHighlightStr} = carSlice.actions;
+export const { add, remove} = carSlice.actions;
 
 export const carSelector = (state) => state.cars.value;
-export const highlightStrSelector = (state) => state.cars.highlightStr;
 
 export default carSlice.reducer;

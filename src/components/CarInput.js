@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { add, updateHighlightStr } from '../store/carSlice';
+import { add } from '../store/carSlice';
 import { carNameSelector, carValueSelector, changeName, changeValue } from '../store/formSlice';
 
 
@@ -19,8 +19,8 @@ function CarInput() {
       const handleSubmit = (e) => {
         e.preventDefault();
         if(carName === '' || carValue === '') {
-            carName === '' && setIsCarNameEmpty(true);
-            carValue === '' && setIsCarValueEmpty(true);
+            setIsCarNameEmpty(carName === '');
+            setIsCarValueEmpty(carValue === '');
         } else {
             dispatch(add({
                 id: getRandomInt(),
@@ -30,7 +30,6 @@ function CarInput() {
             setIsCarValueEmpty(false);
             dispatch(changeName(''));
             dispatch(changeValue(''));
-            dispatch(updateHighlightStr(''));
         }
     };
 
@@ -42,9 +41,7 @@ function CarInput() {
                     <div className="field">
                         <label className="label">Car Name</label>
                         <div className="control">
-                            <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => {
-                                dispatch(changeName(e.target.value))
-                                dispatch(updateHighlightStr(e.target.value))}  }/>
+                            <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => dispatch(changeName(e.target.value))}/>
                             {isCarNameEmpty && <p className='help is-danger'>Please enter car name</p>}
                         </div>
                     </div>
