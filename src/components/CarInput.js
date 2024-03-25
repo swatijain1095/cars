@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { add, updateHighlightStr } from '../store/carSlice';
+import { carNameSelector, carValueSelector, changeName, changeValue } from '../store/formSlice';
+
 
 function CarInput() {
-    const [carName, setCarName] = useState('');
-    const [carValue, setCarValue] = useState('');
     const [isCarNameEmpty, setIsCarNameEmpty] = useState(false);
     const [isCarValueEmpty, setIsCarValueEmpty] = useState(false);
     const dispatch = useDispatch();
+    const carName = useSelector(carNameSelector);
+    const carValue = useSelector(carValueSelector);
+    
 
     const getRandomInt = () => {
         return Math.floor(Math.random() * 100000);
@@ -25,8 +28,9 @@ function CarInput() {
                 value: parseInt(carValue)}))
             setIsCarNameEmpty(false);
             setIsCarValueEmpty(false);
-            setCarName('');
-            setCarValue('');
+            dispatch(changeName(''));
+            dispatch(changeValue(''));
+            dispatch(updateHighlightStr(''));
         }
     };
 
@@ -39,7 +43,7 @@ function CarInput() {
                         <label className="label">Car Name</label>
                         <div className="control">
                             <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => {
-                                setCarName(e.target.value)
+                                dispatch(changeName(e.target.value))
                                 dispatch(updateHighlightStr(e.target.value))}  }/>
                             {isCarNameEmpty && <p className='help is-danger'>Please enter car name</p>}
                         </div>
@@ -47,7 +51,8 @@ function CarInput() {
                     <div className="field">
                         <label className="label">Car Value</label>
                         <div className="control">
-                            <input className={`input ${isCarValueEmpty ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={carValue} onChange={(e) => setCarValue(e.target.value)}/>
+                            <input className={`input ${isCarValueEmpty ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={carValue} onChange={(e) => 
+                                dispatch(changeValue(e.target.value))}/>
                             {isCarValueEmpty && <p className='help is-danger'>Please enter car value</p>}
                         </div>
                     </div>
