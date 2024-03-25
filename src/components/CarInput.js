@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { add } from '../store/carSlice';
-import { carNameSelector, carValueSelector, changeName, changeValue } from '../store/formSlice';
+import { add, edit } from '../store/carSlice';
+import { carNameSelector, carValueSelector, changeName, changeValue, carIdSelector, changeId } from '../store/formSlice';
 
 
 function CarInput() {
@@ -10,7 +10,7 @@ function CarInput() {
     const dispatch = useDispatch();
     const carName = useSelector(carNameSelector);
     const carValue = useSelector(carValueSelector);
-    
+    const carId = useSelector(carIdSelector);
 
     const getRandomInt = () => {
         return Math.floor(Math.random() * 100000);
@@ -22,14 +22,22 @@ function CarInput() {
             setIsCarNameEmpty(carName === '');
             setIsCarValueEmpty(carValue === '');
         } else {
-            dispatch(add({
-                id: getRandomInt(),
-                name: carName,
-                value: parseInt(carValue)}))
+            if (carId === null) {
+                dispatch(add({
+                    id: getRandomInt(),
+                    name: carName,
+                    value: parseInt(carValue)
+                }));
+            } else {
+               dispatch(edit({ id: carId, name: carName, value: parseInt(carValue)})); 
+               dispatch(changeId(null));
+            }
+
             setIsCarNameEmpty(false);
             setIsCarValueEmpty(false);
             dispatch(changeName(''));
             dispatch(changeValue(''));
+            
         }
     };
 

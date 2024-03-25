@@ -4,7 +4,8 @@ export const formSlice = createSlice({
     name: 'form',
     initialState : {
       name: '',
-      value: ''
+      value: '',
+      id: null
     },
     reducers: {
         changeName: (state, action) => {
@@ -12,13 +13,17 @@ export const formSlice = createSlice({
         },
         changeValue: (state, action) => {
             state.value = action.payload
+        },
+        changeId: (state, action) => {
+            state.id = action.payload
         }
         },
 });
 
-export const { changeName, changeValue} = formSlice.actions;
+export const { changeName, changeValue, changeId} = formSlice.actions;
 
 export const carNameSelector = (state) => state.form.name;
 export const carValueSelector = (state) => state.form.value;
+export const carIdSelector = (state) => state.form.id;
 
 export default formSlice.reducer;
