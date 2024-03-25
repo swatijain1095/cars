@@ -1,29 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    name: '',
+    value: '',
+    id: null,
+    isNameError: false,
+    isValueError: false
+};
+
 export const formSlice = createSlice({
     name: 'form',
-    initialState : {
-      name: '',
-      value: '',
-      id: null
-    },
+    initialState,
     reducers: {
-        changeName: (state, action) => {
-            state.name = action.payload
+        changeFormValue: (state, action) => {
+            return {
+                ...state,
+                ...action.payload
+            }
         },
-        changeValue: (state, action) => {
-            state.value = action.payload
-        },
-        changeId: (state, action) => {
-            state.id = action.payload
+        resetForm: (state) => {
+            return initialState;
         }
-        },
+    },
 });
 
-export const { changeName, changeValue, changeId} = formSlice.actions;
+export const { changeFormValue, resetForm } = formSlice.actions;
 
-export const carNameSelector = (state) => state.form.name;
-export const carValueSelector = (state) => state.form.value;
-export const carIdSelector = (state) => state.form.id;
+export const carFormSelector = (state) => state.form;
 
 export default formSlice.reducer;

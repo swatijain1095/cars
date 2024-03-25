@@ -1,16 +1,11 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add, edit } from '../store/carSlice';
-import { carNameSelector, carValueSelector, changeName, changeValue, carIdSelector, changeId } from '../store/formSlice';
+import { carFormSelector, changeFormValue, resetForm } from '../store/formSlice';
 
 
 function CarInput() {
-    const [isCarNameEmpty, setIsCarNameEmpty] = useState(false);
-    const [isCarValueEmpty, setIsCarValueEmpty] = useState(false);
     const dispatch = useDispatch();
-    const carName = useSelector(carNameSelector);
-    const carValue = useSelector(carValueSelector);
-    const carId = useSelector(carIdSelector);
+    const { name, id, value, isNameError, isValueError } = useSelector(carFormSelector);
 
     const getRandomInt = () => {
         return Math.floor(Math.random() * 100000);
@@ -18,30 +13,21 @@ function CarInput() {
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        if(carName === '' || carValue === '') {
-            setIsCarNameEmpty(carName === '');
-            setIsCarValueEmpty(carValue === '');
+        if(name === '' || value === '') {
+            dispatch(changeFormValue({isNameError: name === '', isValueError : value === ''}));
         } else {
-            if (carId === null) {
+            if (id === null) {
                 dispatch(add({
                     id: getRandomInt(),
-                    name: carName,
-                    value: parseInt(carValue)
+                    name,
+                    value: parseInt(value)
                 }));
             } else {
-               dispatch(edit({ id: carId, name: carName, value: parseInt(carValue)})); 
-               dispatch(changeId(null));
+               dispatch(edit({ id, name, value: parseInt(value)})); 
             }
-
-            setIsCarNameEmpty(false);
-            setIsCarValueEmpty(false);
-            dispatch(changeName(''));
-            dispatch(changeValue(''));
-            
+            dispatch(resetForm());
         }
     };
-
-    console.log()
 
     return (
             <section className="car-input">
@@ -49,16 +35,16 @@ function CarInput() {
                     <div className="field">
                         <label className="label">Car Name</label>
                         <div className="control">
-                            <input className={`input ${isCarNameEmpty ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={carName} onChange={(e) => dispatch(changeName(e.target.value))}/>
-                            {isCarNameEmpty && <p className='help is-danger'>Please enter car name</p>}
+                            <input className={`input ${isNameError ? 'is-danger' : ''}`} type="text" placeholder="Give Car name here" value={name} onChange={(e) => dispatch(changeFormValue({name: e.target.value}))}/>
+                            {isNameError && <p className='help is-danger'>Please enter car name</p>}
                         </div>
                     </div>
                     <div className="field">
                         <label className="label">Car Value</label>
                         <div className="control">
-                            <input className={`input ${isCarValueEmpty ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={carValue} onChange={(e) => 
-                                dispatch(changeValue(e.target.value))}/>
-                            {isCarValueEmpty && <p className='help is-danger'>Please enter car value</p>}
+                            <input className={`input ${isValueError ? 'is-danger' : ''}`} type="number" placeholder="Give Car value here" value={value} onChange={(e) => 
+                                dispatch(changeFormValue({ value: e.target.value}))}/>
+                            {isValueError && <p className='help is-danger'>Please enter car value</p>}
                         </div>
                     </div>
                     <div className="field submit-btn">
@@ -70,6 +56,5 @@ function CarInput() {
             </section>
     )
 };
-
 
 export default CarInput;

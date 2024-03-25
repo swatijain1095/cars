@@ -1,20 +1,18 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { remove, } from '../store/carSlice';
-import { carNameSelector, changeName, changeValue, changeId } from '../store/formSlice';
+import { carFormSelector, changeFormValue } from '../store/formSlice';
 
 function CarList({ cars }) {
     const dispatch = useDispatch();
-    const carName = useSelector(carNameSelector);
+    const { name: carName } = useSelector(carFormSelector);
 
     const handleDelete = (id) => {
         dispatch(remove(id))
     }
 
     const handleEdit = (id, name, value) => {
-        dispatch(changeName(name));
-        dispatch(changeValue(value));
-        dispatch(changeId(id));
+        dispatch(changeFormValue({name, value, id}));
     }
 
     const renderedList = cars.map(({ id, name, value }) => {
